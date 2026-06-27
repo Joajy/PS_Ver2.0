@@ -1,0 +1,28 @@
+/*
+  WITH RECURSIVE [TABLE] AS (
+    Anchor Member: [재귀 시작점]
+    UNION ALL
+    Recursive Member: [재귀적으로 반복 탐색]
+  )
+*/
+
+WITH RECURSIVE GENERATIONS AS (
+    SELECT ID
+         , PARENT_ID 
+         , 1 AS GENERATION
+      FROM ECOLI_DATA
+     WHERE PARENT_ID IS NULL
+    
+     UNION ALL
+    
+    SELECT E.ID
+         , E.PARENT_ID
+         , G.GENERATION + 1 AS GENERATION
+      FROM ECOLI_DATA AS E
+         , GENERATIONS AS G
+     WHERE E.PARENT_ID = G.ID
+)
+
+SELECT ID
+FROM GENERATIONS
+WHERE GENERATION = 3
