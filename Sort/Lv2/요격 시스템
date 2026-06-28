@@ -1,0 +1,38 @@
+import java.util.*;
+
+class Solution {
+    
+    static List<Info> info;
+    static class Info {
+        int s, e;
+        Info(int s, int e) {
+            this.s = s;
+            this.e = e;
+        }
+    }
+
+    public int solution(int[][] targets) {
+        // 1. init
+        int answer = 0;
+        info = new ArrayList<>();
+        for(int[] t : targets) {
+            info.add(new Info(t[0], t[1]));
+        }
+        Collections.sort(info, (o1, o2) -> {
+            if(o1.e == o2.e) {
+                return Integer.compare(o1.s, o2.s);
+            }
+            return Integer.compare(o1.e, o2.e);
+        });
+        int end = 0;
+        // 2. main
+        for(int i = 0; i < info.size(); ++i) {
+            Info cur = info.get(i);
+            //현 시점에서 긴 녀석의 end보다 현재 시작점이 더 멀리 있다면 새로 추가
+            if(end > cur.s) continue;
+            ++answer;
+            end = cur.e;
+        }
+        return answer;
+    }
+}
